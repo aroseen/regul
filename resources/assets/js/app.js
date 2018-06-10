@@ -21,6 +21,14 @@ window.vm = new Vue({
   },
   components: {
     'vform': VueForm,
+  },
+  methods: {
+    showSuccessNotification (title, text) {
+      this.$toast.success({
+        title: title,
+        message: text
+      });
+    }
   }
 });
 
@@ -30,19 +38,11 @@ let echo = new Echo({
 });
 
 echo.channel('processing').listen('ProcessingStarted', function (data) {
-  vm.$toast.success({
-    title: data.title,
-    message: data.notification
-  });
-  console.log(data.title + ': ' + data.notification);
-  vm.processing = true;
-  vm.showSpinner = true;
+  vm.showSuccessNotification(data.title, data.notification);
+  console.log(data.date, ': ' + data.title + ': ' + data.notification);
+  vm.processing = vm.showSpinner = true;
 }).listen('ProcessingFinished', function (data) {
-  vm.$toast.success({
-    title: data.title,
-    message: data.notification
-  });
-  console.log(data.title + ': ' + data.notification);
-  vm.processing = false;
-  vm.showSpinner = false;
+  vm.showSuccessNotification(data.title, data.notification);
+  console.log(data.date, ': ' + data.title + ': ' + data.notification);
+  vm.processing = vm.showSpinner = false;
 });

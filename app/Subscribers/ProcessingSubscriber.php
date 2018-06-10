@@ -24,7 +24,7 @@ class ProcessingSubscriber
      */
     public function onProcessingStarted($event): void
     {
-        dispatch(new LongTaskJob());
+        dispatch(new LongTaskJob())->onQueue('jobs');
     }
 
     /**

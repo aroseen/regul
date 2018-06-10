@@ -33,6 +33,10 @@ Route::post('/', function () {
     broadcast(new ProcessingStarted());
 });
 
+Route::get('/welcome', function () {
+    return view('welcome');
+});
+
 Route::get('/{wildcard}', function () {
     return view('layouts.app');
 });

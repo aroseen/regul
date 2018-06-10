@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use Carbon\Carbon;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -32,6 +33,7 @@ class ProcessingFinished implements ShouldBroadcast
         return [
             'title'        => 'Новое оповещение',
             'notification' => 'Обработка завершена',
+            'date'         => Carbon::now()->toDateTimeString(),
         ];
     }
 }

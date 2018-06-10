@@ -7,12 +7,12 @@
 
                 <div class="card-body">
                     <form :processing="processing" :id="id" :method="method" :action="action">
-                        <vfield v-if="!isAjax" type="hidden" name="_token" :value="csrf_token"/>
+                        <vfield v-if="csrf_token" type="hidden" name="_token" :value="csrf_token"/>
                         <vfield v-for="item in fields" :key="item.id" :id="item.id" :name="item.name" :title="item.title"/>
                         <vbutton :is-ajax="isAjax" button-text="Отправить" @buttonClicked="onFormButtonClick"/>
                     </form>
                 </div>
-
+                <!-- v-if="!isAjax" -->
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@
         return JSON.parse(this.fieldsData);
       },
       csrf_token: function () {
-        return document.getElementsByName('csrf-token')[0].content;
+        return document.getElementsByName('csrf-token')[0].content || null;
       }
     },
     watch: {
