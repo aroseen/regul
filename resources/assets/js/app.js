@@ -1,22 +1,48 @@
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import Echo from 'laravel-echo';
+import Vue from 'vue';
+import VueForm from './components/Form';
+import CxltToastr from 'cxlt-vue2-toastr';
+import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+Vue.use(CxltToastr, {
+  position: 'top right',
+  showDuration: 2000,
+  hideDuration: 2000,
+  timeOut: 5000
+});
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+window.vm = new Vue({
+  el: '#app',
+  data: {
+    processing: false,
+    showSpinner: false
+  },
+  components: {
+    'vform': VueForm,
+  }
+});
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+let echo = new Echo({
+  broadcaster: 'socket.io',
+  host: window.location.hostname + ':6001',
+});
 
-const app = new Vue({
-    el: '#app'
+echo.channel('processing').listen('ProcessingStarted', function (data) {
+  vm.$toast.success({
+    title: data.title,
+    message: data.notification
+  });
+  console.log(data.title + ': ' + data.notification);
+  vm.processing = true;
+  vm.showSpinner = true;
+}).listen('ProcessingFinished', function (data) {
+  vm.$toast.success({
+    title: data.title,
+    message: data.notification
+  });
+  console.log(data.title + ': ' + data.notification);
+  vm.processing = false;
+  vm.showSpinner = false;
 });
