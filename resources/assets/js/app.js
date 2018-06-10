@@ -10,7 +10,7 @@ Vue.use(CxltToastr, {
   position: 'top right',
   showDuration: 2000,
   hideDuration: 2000,
-  timeOut: 5000
+  timeOut: 8000
 });
 
 window.vm = new Vue({
